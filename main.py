@@ -1,3 +1,7 @@
+import string
+from random import random
+
+
 def detect_hamming_error(codeword):
     # Vérification de la longueur du mot de code
     if len(codeword) != 7:
@@ -82,24 +86,57 @@ def read_binary_file(filename):
 filename = "file.txt"
 
 # Lire le fichier binaire et convertir en une liste de bits
-print("Lecture du fichier binaire")
 lettre = read_binary_file(filename)
 lettre_corrige = ""
 lettre_decode = ""
 lettre_decode_ascii = ""
 
-print("dectection et correction des erreurs")
+# Détection et correction des erreurs
+print("Détection et correction des erreurs...")
 for i in range(0, len(lettre), 7):
     lettre_corrige += detect_hamming_error(lettre[i:i + 7])
 
-print("Décodage du message")
+with open("Lettre_corrige.txt", "w") as f:
+    f.write(lettre_corrige)
+
+# Décodage du message
+print("Décodage du message...")
 for i in range(0, len(lettre_corrige), 7):
     lettre_decode += decode_hamming(lettre_corrige[i:i + 7])
 
-# transformation de la lettre_decode binaire en ascii
-print("Conversion du message en ASCII")
+with open("Lettre_decode.txt", "w") as f:
+    f.write(lettre_decode)
+
+# Conversion du message en ASCII
+print("Conversion du message en ASCII...")
 for i in range(0, len(lettre_decode), 8):
     lettre_decode_ascii += chr(int(lettre_decode[i:i + 8], 2))
 
-print("Décodage du message avec le chiffrement de Vigenère")
+with open("Lettre_decode_ascii.txt", "w") as f:
+    f.write(lettre_decode_ascii)
+
+# Décodage du message avec le chiffrement de Vigenère
+print("Décodage du message avec le chiffrement de Vigenère...")
 print(vigenere_decode(lettre_decode_ascii, "PYTHON"))
+
+with open("Lettre_decode_vigenere.txt", "w") as f:
+    f.write(vigenere_decode(lettre_decode_ascii, "PYTHON"))
+
+
+def generate_random_key(length):
+    return "".join(chr(int(random() * 256)) for _ in range(length))
+
+
+def vernam_encrypt(plaintext):
+    key = generate_random_key(len(plaintext))
+    ciphertext = ""
+    for i in range(len(plaintext)):
+        ciphertext += chr(ord(plaintext[i]) ^ ord(key[i]))
+    return ciphertext, key
+
+
+encrypted_text = vernam_encrypt(lettre_decode_ascii)
+print(encrypted_text)
+
+with open("Lettre_chiffrage_vernam.txt", "w") as f:
+    f.write(encrypted_text[0])
