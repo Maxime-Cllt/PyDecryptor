@@ -147,7 +147,7 @@ encrypted_text, key = vernam_encrypt(lettre_decode_vigenere)
 print(encrypted_text)
 
 with open("Lettre_chiffrage_vernam.txt", "w") as f:
-    f.write(encrypted_text[0])
+    f.write(encrypted_text)
 
 decrypted_text = vernam_decrypt(encrypted_text, key)
 print(decrypted_text)
