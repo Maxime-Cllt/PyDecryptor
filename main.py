@@ -90,6 +90,7 @@ lettre = read_binary_file(filename)
 lettre_corrige = ""
 lettre_decode = ""
 lettre_decode_ascii = ""
+lettre_decode_vigenere = ""
 
 # Détection et correction des erreurs
 print("Détection et correction des erreurs...")
@@ -117,10 +118,11 @@ with open("Lettre_decode_ascii.txt", "w") as f:
 
 # Décodage du message avec le chiffrement de Vigenère
 print("Décodage du message avec le chiffrement de Vigenère...")
-print(vigenere_decode(lettre_decode_ascii, "PYTHON"))
+lettre_decode_vigenere = vigenere_decode(lettre_decode_ascii, "PYTHON")
+print(lettre_decode_vigenere)
 
 with open("Lettre_decode_vigenere.txt", "w") as f:
-    f.write(vigenere_decode(lettre_decode_ascii, "PYTHON"))
+    f.write(lettre_decode_vigenere)
 
 
 def generate_random_key(length):
@@ -134,9 +136,19 @@ def vernam_encrypt(plaintext):
         ciphertext += chr(ord(plaintext[i]) ^ ord(key[i]))
     return ciphertext, key
 
+def vernam_decrypt(ciphertext, key):
+    plaintext = ""
+    for i in range(len(ciphertext)):
+        plaintext += chr(ord(ciphertext[i]) ^ ord(key[i]))
+    return plaintext
 
-encrypted_text = vernam_encrypt(lettre_decode_ascii)
+
+encrypted_text, key = vernam_encrypt(lettre_decode_vigenere)
 print(encrypted_text)
 
 with open("Lettre_chiffrage_vernam.txt", "w") as f:
     f.write(encrypted_text[0])
+
+decrypted_text = vernam_decrypt(encrypted_text, key)
+print(decrypted_text)
+
