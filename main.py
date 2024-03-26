@@ -1,5 +1,6 @@
 import string
 from random import random
+import huffman
 
 
 def detect_hamming_error(codeword):
@@ -144,11 +145,32 @@ def vernam_decrypt(ciphertext, key):
 
 
 encrypted_text, key = vernam_encrypt(lettre_decode_vigenere)
-print(encrypted_text)
 
 with open("Lettre_chiffrage_vernam.txt", "w") as f:
     f.write(encrypted_text)
 
+with open("Lettre_chiffrage_vernam_key.txt", "w") as f:
+    f.write(key)
+
 decrypted_text = vernam_decrypt(encrypted_text, key)
-print(decrypted_text)
+
+print("Compression du message avec Huffman...")
+huffman = huffman.HuffmanCoding()
+codeMap = huffman.getCode(encrypted_text)
+print("code map : ", codeMap)
+lettre_encode_verman_huffman = huffman.encode(codeMap, encrypted_text)
+lettre_decode_verman_huffman = huffman.decode(lettre_encode_verman_huffman)
+lettre_decode_verman_huffman_decrypted = vernam_decrypt(lettre_decode_verman_huffman, key)
+
+with open("Lettre_encode_verman_huffman.txt", "w") as f:
+    f.write(lettre_encode_verman_huffman)
+
+with open("Lettre_decode_verman_huffman.txt", "w") as f:
+    f.write(lettre_decode_verman_huffman)
+
+with open("Lettre_decode_verman_huffman_decrypted.txt", "w") as f:
+    f.write(lettre_decode_verman_huffman_decrypted)
+
+print("Fin du programme")
+
 
