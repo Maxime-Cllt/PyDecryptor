@@ -2,7 +2,7 @@ class HuffmanNode:
     # constructor, Time O(1) Space O(1)
     def __init__(self, ch, frequency, left, right):
         """
-        Permet de créer un noeud de l'arbre binaire
+        Permet de créer un noeud de l'arbre de Huffman
         :param ch: Caractère
         :param frequency: Fréquence du caractère
         :param left: Fils gauche
@@ -16,11 +16,12 @@ class HuffmanNode:
 
 class HuffmanCoding:
 
+    # All steps to create huffman code
     def getCode(self, input):
         """
-        Permet de coder un message avec l'algorithme de Huffman
-        :param input: message à coder
-        :return: codeMap : dictionnaire contenant les codes de Huffman
+        Permet de créer un code Huffman
+        :param input: La chaine de caractère à encoder
+        :return: Le code Huffman
         """
         freqMap = self.buildFrequencyMap(input)
         nodeQueue = self.sortByFrequence(freqMap)
@@ -32,9 +33,9 @@ class HuffmanCoding:
     # s is number of chars in input string, m is number of unique chars
     def buildFrequencyMap(self, input):
         """
-        Permet de construire une map de fréquence des caractères
-        :param input: message à coder
-        :return: map : dictionnaire contenant les fréquences des caractères
+        Permet de construire la fréquence des caractères
+        :param input:  La chaine de caractère à encoder
+        :return:  La fréquence des caractères
         """
         map = {}
         for c in input:
@@ -45,10 +46,9 @@ class HuffmanCoding:
     def sortByFrequence(self, map):
         """
         Permet de trier les fréquences des caractères
-        :param map: dictionnaire contenant les fréquences des caractères
-        :return: queue : liste des fréquences triées
+        :param map: La fréquence des caractères
+        :return: La fréquence des caractères triée
         """
-
         queue = []
         for k, v in map.items():
             queue.append(HuffmanNode(k, v, None, None))
@@ -60,9 +60,9 @@ class HuffmanCoding:
     # Time O(m) Space O(n), m is unique chars in string, n is nodes in tree n=2m-1
     def buildTree(self, nodeQueue):
         """
-        Permet de construire un arbre binaire à partir des fréquences triées
-        :param nodeQueue: liste des fréquences triées
-        :return: nodeQueue.pop(0) : racine de l'arbre binaire
+        Permet de construire l'arbre binaire trié par fréquence
+        :param nodeQueue:  L'arbre binaire trié par fréquence
+        :return: L'arbre binaire trié par fréquence
         """
         while len(nodeQueue) > 1:
             node1 = nodeQueue.pop(0)
@@ -74,9 +74,9 @@ class HuffmanCoding:
     # Step 4: Create Huffman code map by preorder of the tree, Time O(n) Space O(m+n)
     def createHuffmanCode(self, node):
         """
-        Permet de créer un dictionnaire de codes de Huffman
-        :param node: racine de l'arbre binaire
-        :return: map : dictionnaire de codes de Huffman
+        Permet de créer le code Huffman
+        :param node: Le noeud de l'arbre de Huffman
+        :return: Le code Huffman
         """
         map = {}
         self.createCodeRec(node, map, "")
@@ -84,13 +84,6 @@ class HuffmanCoding:
 
     # Preorder of the tree using recursion, Time O(n) Space O(n)
     def createCodeRec(self, node, map, s):
-        """
-        Permet de créer un dictionnaire de codes de Huffman
-        :param node: racine de l'arbre binaire
-        :param map: dictionnaire de codes de Huffman
-        :param s: code de Huffman
-        :return: None
-        """
         if node.left == None and node.right == None:
             map[node.ch] = s
             return
@@ -101,28 +94,28 @@ class HuffmanCoding:
     # s is input string length, o is output string length
     def encode(self, codeMap, input):
         """
-        Permet de coder un message avec l'algorithme de Huffman
-        :param codeMap: dictionnaire de codes de Huffman
-        :param input: message à coder
-        :return: message : message codé
+        Permet d'encoder le message
+        :param codeMap: Le code Huffman
+        :param input:  La chaine de caractère à encoder
+        :return: Le message encodé
         """
-        message = ""
+        s = ""
         for i in range(0, len(input)):
-            message = codeMap.get(input[i])
-        return message
+            s += codeMap.get(input[i])
+        return s
 
     # Step 6. decode. Time O(o), Space O(s), o is coded message length, s is original message input
     def decode(self, coded):
         """
-        Permet de décoder un message avec l'algorithme de Huffman
-        :param coded: message codé
-        :return: message : message décodé
+        Permet de décoder le message
+        :param coded: Le message encodé
+        :return: Le message décodé
         """
-        message = ""
+        s = ""
         curr = self.root
         for i in range(0, len(coded)):
             curr = curr.right if coded[i] == '1' else curr.left
             if curr.left == None and curr.right == None:
-                message += curr.ch
+                s += curr.ch
                 curr = self.root
-        return message
+        return s

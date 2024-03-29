@@ -95,7 +95,6 @@ def generate_random_key(length):
     :param length: Longueur de la clé
     :return: Clé aléatoire
     """
-
     return "".join(chr(int(random() * 256)) for _ in range(length))
 
 
@@ -186,17 +185,17 @@ print("code map : ", codeMap)
 
 # Encodage du message avec Huffman pour la compression
 lettre_encode_verman_huffman = huffman.encode(codeMap, encrypted_text)
+# Décodage du message avec Huffman
+lettre_decode_verman_huffman = huffman.decode(lettre_encode_verman_huffman)
+# Déchiffrement du message avec le chiffrement de Vernam après Huffman
+lettre_decode_verman_huffman_decrypted = vernam_decrypt(lettre_decode_verman_huffman, key)
 
 with open("Etape_6_Lettre_encode_verman_huffman.txt", "w") as f:
     f.write(lettre_encode_verman_huffman)
 
-# Décodage du message avec Huffman
-lettre_decode_verman_huffman = huffman.decode(lettre_encode_verman_huffman)
 with open("Etape_7_Lettre_decode_verman_huffman.txt", "w") as f:
     f.write(lettre_decode_verman_huffman)
 
-# Déchiffrement du message avec le chiffrement de Vernam après Huffman
-lettre_decode_verman_huffman_decrypted = vernam_decrypt(lettre_decode_verman_huffman, key)
 with open("Etape_8_Lettre_decode_verman_huffman_decrypted.txt", "w") as f:
     f.write(lettre_decode_verman_huffman_decrypted)
 
