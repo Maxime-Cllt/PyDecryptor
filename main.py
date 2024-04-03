@@ -1,6 +1,6 @@
 import string
 from random import random
-import huffman
+from huffman import HuffmanCoding
 
 
 def detect_hamming_error(codeword):
@@ -89,13 +89,17 @@ def read_binary_file(filename):
         return f.read()
 
 
-def generate_random_key(length):
+def generate_random_key(message):
     """
     Génère une clé aléatoire de longueur donnée
-    :param length: Longueur de la clé
-    :return: Clé aléatoire
+    :param message: Message à chiffrer
+    :return: Clé de chiffrement
     """
-    return "".join(chr(int(random() * 256)) for _ in range(length))
+    cle = ""
+
+    for iLettre in range(len(message)):
+        cle += chr(int(random() * 26) + ord('a'))
+    return cle
 
 
 def vernam_encrypt(plaintext):
@@ -104,7 +108,7 @@ def vernam_encrypt(plaintext):
     :param plaintext: Message à chiffrer
     :return: Message chiffré et clé de chiffrement
     """
-    key = generate_random_key(len(plaintext))
+    key = generate_random_key(plaintext)
     ciphertext = ""
     for i in range(len(plaintext)):
         ciphertext += chr(ord(plaintext[i]) ^ ord(key[i]))
@@ -172,6 +176,9 @@ encrypted_text, key = vernam_encrypt(lettre_decode_vigenere)
 with open("Etape_5_Lettre_chiffrage_vernam.txt", "w") as f:
     f.write(encrypted_text)
 
+with open("Etape_5_Lettre_chiffrage_vernam_bynary.txt", "w") as f:
+    f.write("".join(f"{ord(i):08b}" for i in encrypted_text))
+
 with open("Etape_5_Cle_vernam.txt", "w") as f:
     f.write(key)
 
@@ -179,7 +186,11 @@ decrypted_text = vernam_decrypt(encrypted_text, key)
 
 # Compression du message avec Huffman
 print("Compression du message avec Huffman...")
-huffman = huffman.HuffmanCoding()
+huffman = HuffmanCoding()
+codeMap = huffman.getCode(encrypted_text)
+print("code map : ", codeMap)
+HuffmanCoding.saveHuffmanObject("huffman_code.txt", huffman)
+huffman = HuffmanCoding.loadHuffmanObject("huffman_code.txt")
 codeMap = huffman.getCode(encrypted_text)
 print("code map : ", codeMap)
 

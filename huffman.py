@@ -1,3 +1,6 @@
+import pickle
+
+
 class HuffmanNode:
     # constructor, Time O(1) Space O(1)
     def __init__(self, ch, frequency, left, right):
@@ -17,6 +20,9 @@ class HuffmanNode:
 class HuffmanCoding:
 
     # All steps to create huffman code
+    def __init__(self):
+        self.root = None
+
     def getCode(self, input):
         """
         Permet de créer un code Huffman
@@ -84,7 +90,7 @@ class HuffmanCoding:
 
     # Preorder of the tree using recursion, Time O(n) Space O(n)
     def createCodeRec(self, node, map, s):
-        if node.left == None and node.right == None:
+        if node.left is None and node.right is None:
             map[node.ch] = s
             return
         self.createCodeRec(node.left, map, s + '0')
@@ -115,7 +121,25 @@ class HuffmanCoding:
         curr = self.root
         for i in range(0, len(coded)):
             curr = curr.right if coded[i] == '1' else curr.left
-            if curr.left == None and curr.right == None:
+            if curr.left is None and curr.right is None:
                 s += curr.ch
                 curr = self.root
         return s
+
+    @staticmethod
+    def saveHuffmanObject(filename, obj):
+        """
+        Permet de sauvegarder la classe HuffmanCoding ainsi que tout les attributs
+        :param filename: Le nom du fichier
+        """
+        with open(filename, 'wb') as file:
+            pickle.dump(obj, file)
+
+    @staticmethod
+    def loadHuffmanObject(filename):
+        """
+        Permet de charger un objet HuffmanCoding depuis un fichier
+        :param filename: Le nom du fichier
+        """
+        with open(filename, 'rb') as file:
+            return pickle.load(file)
