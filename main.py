@@ -181,6 +181,7 @@ with open("Etape_5_Lettre_chiffrage_vernam_bynary.txt", "w") as f:
 
 with open("Etape_5_Cle_vernam.txt", "w") as f:
     f.write(key)
+print(f"Cle de chiffrement pour le chiffrement de Vernam : \n{key}")
 
 decrypted_text = vernam_decrypt(encrypted_text, key)
 
@@ -192,7 +193,6 @@ print("code map : ", codeMap)
 HuffmanCoding.saveHuffmanObject("huffman_code.txt", huffman)
 huffman = HuffmanCoding.loadHuffmanObject("huffman_code.txt")
 codeMap = huffman.getCode(encrypted_text)
-print("code map : ", codeMap)
 
 # Encodage du message avec Huffman pour la compression
 lettre_encode_verman_huffman = huffman.encode(codeMap, encrypted_text)
@@ -210,4 +210,9 @@ with open("Etape_7_Lettre_decode_verman_huffman.txt", "w") as f:
 with open("Etape_8_Lettre_decode_verman_huffman_decrypted.txt", "w") as f:
     f.write(lettre_decode_verman_huffman_decrypted)
 
+print(
+    f"Message crypté avec le chiffrement de Vernam et compressé avec Huffman en binaire: \n{lettre_encode_verman_huffman}")
+print(f"taille message original : {len(lettre_decode_vigenere)*8} bits")
+print(f"taille message compressé : {len(lettre_encode_verman_huffman)} bits")
+print(f"Tau de compression : {len(lettre_decode_vigenere)*8/len(lettre_encode_verman_huffman)}")
 print("Fin du programme")
