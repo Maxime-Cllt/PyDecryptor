@@ -212,7 +212,7 @@ with open("Etape_8_Lettre_decode_verman_huffman_decrypted.txt", "w") as f:
 
 print(
     f"Message crypté avec le chiffrement de Vernam et compressé avec Huffman en binaire: \n{lettre_encode_verman_huffman}")
-print(f"taille message original : {len(lettre_decode_vigenere)*8} bits")
+print(f"taille message original : {len(lettre_decode_vigenere) * 8} bits")
 print(f"taille message compressé : {len(lettre_encode_verman_huffman)} bits")
-print(f"Tau de compression : {len(lettre_decode_vigenere)*8/len(lettre_encode_verman_huffman)}")
+print(f"Tau de compression : {len(lettre_decode_vigenere) * 8 / len(lettre_encode_verman_huffman)}")
 print("Fin du programme")
