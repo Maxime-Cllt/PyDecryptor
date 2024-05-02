@@ -4,7 +4,13 @@ from huffman import HuffmanCoding
 
 
 def detect_hamming_error(codeword):
-    # Vérification de la longueur du mot de code
+    """
+    Permet de détecter et corriger les erreurs dans un mot de code de Hamming
+    Complexité : O(1)
+    :param codeword: Mot de code de Hamming
+    :return: Mot de code de Hamming corrigé
+    """
+
     if len(codeword) != 7:
         raise ValueError("Le mot de code doit être de longueur 7.")
 
@@ -48,7 +54,12 @@ def detect_hamming_error(codeword):
 
 # prend un mot de code de 7 bits et retourne le mot decodé
 def decode_hamming(data: str):
-    # Vérification de la longueur du mot de code
+    """
+    Décode un mot de code de Hamming
+    Complexité : O(1)
+    :param data:  Mot de code de Hamming
+    :return: Mot de code de Hamming décodé
+    """
     if len(data) != 7:
         raise ValueError("Le mot de code doit être de longueur 7.")
 
@@ -58,6 +69,7 @@ def decode_hamming(data: str):
 def vigenere_decode(msg: str, key: str) -> str:
     """
     Décode un message avec le chiffrement de Vigenère
+    Complexité : O(n)
     :param msg: Message à décoder
     :param key: Clé de chiffrement
     :return: Message décodé avec le chiffrement de Vigenère
@@ -105,6 +117,7 @@ def generate_random_key(message):
 def vernam_encrypt(plaintext):
     """
     Chiffre un message avec le chiffrement de Vernam
+    Complexité : O(n)
     :param plaintext: Message à chiffrer
     :return: Message chiffré et clé de chiffrement
     """
@@ -118,6 +131,7 @@ def vernam_encrypt(plaintext):
 def vernam_decrypt(ciphertext, key):
     """
     Déchiffre un message avec le chiffrement de Vernam
+    Complexité : O(n)
     :param ciphertext:  Message chiffré
     :param key:  Clé de chiffrement
     :return:  Message déchiffré
@@ -181,7 +195,7 @@ with open("Etape_5_Lettre_chiffrage_vernam_bynary.txt", "w") as f:
 
 with open("Etape_5_Cle_vernam.txt", "w") as f:
     f.write(key)
-print(f"Cle de chiffrement pour le chiffrement de Vernam : \n{key}")
+# print(f"Cle de chiffrement pour le chiffrement de Vernam : \n{key}")
 
 decrypted_text = vernam_decrypt(encrypted_text, key)
 
@@ -189,7 +203,7 @@ decrypted_text = vernam_decrypt(encrypted_text, key)
 print("Compression du message avec Huffman...")
 huffman = HuffmanCoding()
 codeMap = huffman.getCode(encrypted_text)
-print("code map : ", codeMap)
+# print("code map : ", codeMap)
 HuffmanCoding.saveHuffmanObject("huffman_code.txt", huffman)
 huffman = HuffmanCoding.loadHuffmanObject("huffman_code.txt")
 codeMap = huffman.getCode(encrypted_text)
@@ -210,9 +224,9 @@ with open("Etape_7_Lettre_decode_verman_huffman.txt", "w") as f:
 with open("Etape_8_Lettre_decode_verman_huffman_decrypted.txt", "w") as f:
     f.write(lettre_decode_verman_huffman_decrypted)
 
-print(
-    f"Message crypté avec le chiffrement de Vernam et compressé avec Huffman en binaire: \n{lettre_encode_verman_huffman}")
-print(f"taille message original : {len(lettre_decode_vigenere) * 8} bits")
-print(f"taille message compressé : {len(lettre_encode_verman_huffman)} bits")
-print(f"Tau de compression : {len(lettre_decode_vigenere) * 8 / len(lettre_encode_verman_huffman)}")
+# print(
+#     f"Message crypté avec le chiffrement de Vernam et compressé avec Huffman en binaire: \n{lettre_encode_verman_huffman}")
+# print(f"taille message original : {len(lettre_decode_vigenere) * 8} bits")
+# print(f"taille message compressé : {len(lettre_encode_verman_huffman)} bits")
+print(f"Taux de compression : {len(lettre_decode_vigenere) * 8 / len(lettre_encode_verman_huffman)}")
 print("Fin du programme")

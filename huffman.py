@@ -35,8 +35,6 @@ class HuffmanCoding:
         codeMap = self.createHuffmanCode(self.root)
         return codeMap
 
-    # Step 1: Create char frequency map from input string, Time O(s) Space O(m),
-    # s is number of chars in input string, m is number of unique chars
     def buildFrequencyMap(self, input):
         """
         Permet de construire la fréquence des caractères
@@ -48,7 +46,6 @@ class HuffmanCoding:
             map[c] = map.get(c, 0) + 1
         return map
 
-    # Step 2: Create queue of nodes from map and sort by frequency, Time O(mlogm) Space O(m)
     def sortByFrequence(self, map):
         """
         Permet de trier les fréquences des caractères
@@ -63,7 +60,6 @@ class HuffmanCoding:
 
         # Step 3: Build frequency-sorted binary tree from sorted queue, return root
 
-    # Time O(m) Space O(n), m is unique chars in string, n is nodes in tree n=2m-1
     def buildTree(self, nodeQueue):
         """
         Permet de construire l'arbre binaire trié par fréquence
@@ -77,7 +73,6 @@ class HuffmanCoding:
             nodeQueue.append(node)
         return nodeQueue.pop(0)
 
-    # Step 4: Create Huffman code map by preorder of the tree, Time O(n) Space O(m+n)
     def createHuffmanCode(self, node):
         """
         Permet de créer le code Huffman
@@ -88,7 +83,6 @@ class HuffmanCoding:
         self.createCodeRec(node, map, "")
         return map
 
-    # Preorder of the tree using recursion, Time O(n) Space O(n)
     def createCodeRec(self, node, map, s):
         if node.left is None and node.right is None:
             map[node.ch] = s
@@ -96,8 +90,6 @@ class HuffmanCoding:
         self.createCodeRec(node.left, map, s + '0')
         self.createCodeRec(node.right, map, s + '1')
 
-    # Step 5. Use huffman code to encode the input string, Time O(s) Space O(o),
-    # s is input string length, o is output string length
     def encode(self, codeMap, input):
         """
         Permet d'encoder le message
@@ -110,7 +102,6 @@ class HuffmanCoding:
             s += codeMap.get(input[i])
         return s
 
-    # Step 6. decode. Time O(o), Space O(s), o is coded message length, s is original message input
     def decode(self, coded):
         """
         Permet de décoder le message
