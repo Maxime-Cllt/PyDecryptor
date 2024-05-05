@@ -1,4 +1,3 @@
-import string
 from random import random
 from huffman import HuffmanCoding
 
