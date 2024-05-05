@@ -19,23 +19,22 @@ class HuffmanNode:
 
 class HuffmanCoding:
 
-    # All steps to create huffman code
     def __init__(self):
         self.root = None
 
-    def getCode(self, input):
+    def get_code(self, input):
         """
         Permet de créer un code Huffman
         :param input: La chaine de caractère à encoder
         :return: Le code Huffman
         """
-        freqMap = self.buildFrequencyMap(input)
-        nodeQueue = self.sortByFrequence(freqMap)
-        self.root = self.buildTree(nodeQueue)
-        codeMap = self.createHuffmanCode(self.root)
-        return codeMap
+        freq_map = self.build_frequency_map(input)
+        node_queue = self.sort_by_frequence(freq_map)
+        self.root = self.build_tree(node_queue)
+        code_map = self.create_huffman_code(self.root)
+        return code_map
 
-    def buildFrequencyMap(self, input):
+    def build_frequency_map(self, input):
         """
         Permet de construire la fréquence des caractères
         :param input:  La chaine de caractère à encoder
@@ -46,60 +45,59 @@ class HuffmanCoding:
             map[c] = map.get(c, 0) + 1
         return map
 
-    def sortByFrequence(self, map):
+    def sort_by_frequence(self, map):
         """
         Permet de trier les fréquences des caractères
         :param map: La fréquence des caractères
         :return: La fréquence des caractères triée
         """
-        queue = []
-        for k, v in map.items():
-            queue.append(HuffmanNode(k, v, None, None))
-        queue.sort(key=lambda x: x.frequency)
-        return queue
+        list = []
+        for first, second in map.items():
+            list.append(HuffmanNode(first, second, None, None))
+        list.sort(key=lambda x: x.frequency)
+        return list
 
-        # Step 3: Build frequency-sorted binary tree from sorted queue, return root
 
-    def buildTree(self, nodeQueue):
+    def build_tree(self, node_queue):
         """
         Permet de construire l'arbre binaire trié par fréquence
-        :param nodeQueue:  L'arbre binaire trié par fréquence
+        :param node_queue:  L'arbre binaire trié par fréquence
         :return: L'arbre binaire trié par fréquence
         """
-        while len(nodeQueue) > 1:
-            node1 = nodeQueue.pop(0)
-            node2 = nodeQueue.pop(0)
+        while len(node_queue) > 1:
+            node1 = node_queue.pop(0)
+            node2 = node_queue.pop(0)
             node = HuffmanNode('', node1.frequency + node2.frequency, node1, node2)
-            nodeQueue.append(node)
-        return nodeQueue.pop(0)
+            node_queue.append(node)
+        return node_queue.pop(0)
 
-    def createHuffmanCode(self, node):
+    def create_huffman_code(self, node):
         """
         Permet de créer le code Huffman
         :param node: Le noeud de l'arbre de Huffman
         :return: Le code Huffman
         """
         map = {}
-        self.createCodeRec(node, map, "")
+        self.create_code_rec(node, map, "")
         return map
 
-    def createCodeRec(self, node, map, s):
+    def create_code_rec(self, node, map, s):
         if node.left is None and node.right is None:
             map[node.ch] = s
             return
-        self.createCodeRec(node.left, map, s + '0')
-        self.createCodeRec(node.right, map, s + '1')
+        self.create_code_rec(node.left, map, s + '0')
+        self.create_code_rec(node.right, map, s + '1')
 
-    def encode(self, codeMap, input):
+    def encode(self, code_map, input):
         """
         Permet d'encoder le message
-        :param codeMap: Le code Huffman
+        :param code_map: Le code Huffman
         :param input:  La chaine de caractère à encoder
         :return: Le message encodé
         """
         s = ""
         for i in range(0, len(input)):
-            s += codeMap.get(input[i])
+            s += code_map.get(input[i])
         return s
 
     def decode(self, coded):
@@ -118,7 +116,7 @@ class HuffmanCoding:
         return s
 
     @staticmethod
-    def saveHuffmanObject(filename, obj):
+    def save_huffman_object(filename, obj):
         """
         Permet de sauvegarder la classe HuffmanCoding ainsi que tout les attributs
         :param filename: Le nom du fichier
@@ -127,7 +125,7 @@ class HuffmanCoding:
             pickle.dump(obj, file)
 
     @staticmethod
-    def loadHuffmanObject(filename):
+    def load_huffman_object(filename):
         """
         Permet de charger un objet HuffmanCoding depuis un fichier
         :param filename: Le nom du fichier

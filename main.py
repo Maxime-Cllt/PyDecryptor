@@ -201,11 +201,11 @@ decrypted_text = vernam_decrypt(encrypted_text, key)
 # Compression du message avec Huffman
 print("Compression du message avec Huffman...")
 huffman = HuffmanCoding()
-codeMap = huffman.getCode(encrypted_text)
+codeMap = huffman.get_code(encrypted_text)
 # print("code map : ", codeMap)
-HuffmanCoding.saveHuffmanObject("huffman_code.txt", huffman)
-huffman = HuffmanCoding.loadHuffmanObject("huffman_code.txt")
-codeMap = huffman.getCode(encrypted_text)
+HuffmanCoding.save_huffman_object("huffman_code.txt", huffman)
+huffman = HuffmanCoding.load_huffman_object("huffman_code.txt")
+codeMap = huffman.get_code(encrypted_text)
 
 # Encodage du message avec Huffman pour la compression
 lettre_encode_verman_huffman = huffman.encode(codeMap, encrypted_text)
