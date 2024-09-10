@@ -141,91 +141,92 @@ def vernam_decrypt(ciphertext, key):
     return plaintext
 
 
-filename = "file.txt"
+if __name__ == '__main__':
+    filename = "file.txt"
 
-# Lire le fichier binaire et convertir en une liste de bits
-lettre = read_binary_file(filename)
-lettre_corrige = ""
-lettre_decode = ""
-lettre_decode_ascii = ""
-lettre_decode_vigenere = ""
+    # Lire le fichier binaire et convertir en une liste de bits
+    lettre = read_binary_file(filename)
+    lettre_corrige = ""
+    lettre_decode = ""
+    lettre_decode_ascii = ""
+    lettre_decode_vigenere = ""
 
-# Détection et correction des erreurs
-print("Détection et correction des erreurs...")
-for i in range(0, len(lettre), 7):
-    lettre_corrige += detect_hamming_error(lettre[i:i + 7])
+    # Détection et correction des erreurs
+    print("Détection et correction des erreurs...")
+    for i in range(0, len(lettre), 7):
+        lettre_corrige += detect_hamming_error(lettre[i:i + 7])
 
-with open("Etape_1_Lettre_corrige.txt", "w") as f:
-    f.write(lettre_corrige)
+    with open("Etape_1_Lettre_corrige.txt", "w") as f:
+        f.write(lettre_corrige)
 
-# Déchiffrement du message
-print("Déchiffrement du message...")
-for i in range(0, len(lettre_corrige), 7):
-    lettre_decode += decode_hamming(lettre_corrige[i:i + 7])
+    # Déchiffrement du message
+    print("Déchiffrement du message...")
+    for i in range(0, len(lettre_corrige), 7):
+        lettre_decode += decode_hamming(lettre_corrige[i:i + 7])
 
-with open("Etape_2_Lettre_decode.txt", "w") as f:
-    f.write(lettre_decode)
+    with open("Etape_2_Lettre_decode.txt", "w") as f:
+        f.write(lettre_decode)
 
-# Conversion du message en ASCII
-print("Conversion du message en ASCII...")
-for i in range(0, len(lettre_decode), 8):
-    lettre_decode_ascii += chr(int(lettre_decode[i:i + 8], 2))
+    # Conversion du message en ASCII
+    print("Conversion du message en ASCII...")
+    for i in range(0, len(lettre_decode), 8):
+        lettre_decode_ascii += chr(int(lettre_decode[i:i + 8], 2))
 
-with open("Etape_3_Lettre_decode_ascii.txt", "w") as f:
-    f.write(lettre_decode_ascii)
+    with open("Etape_3_Lettre_decode_ascii.txt", "w") as f:
+        f.write(lettre_decode_ascii)
 
-# Déchiffrement du message avec le chiffrement de Vigenère
-print("Déchiffrement du message avec le chiffrement de Vigenère...")
-lettre_decode_vigenere = vigenere_decode(lettre_decode_ascii, "PYTHON")
-print(lettre_decode_vigenere)
+    # Déchiffrement du message avec le chiffrement de Vigenère
+    print("Déchiffrement du message avec le chiffrement de Vigenère...")
+    lettre_decode_vigenere = vigenere_decode(lettre_decode_ascii, "PYTHON")
+    print(lettre_decode_vigenere)
 
-with open("Etape_4_Lettre_decode_vigenere.txt", "w") as f:
-    f.write(lettre_decode_vigenere)
+    with open("Etape_4_Lettre_decode_vigenere.txt", "w") as f:
+        f.write(lettre_decode_vigenere)
 
-# Chiffrement du message avec le chiffrement de Vernam
-print("Chiffrement du message avec le chiffrement de Vernam...")
-encrypted_text, key = vernam_encrypt(lettre_decode_vigenere)
+    # Chiffrement du message avec le chiffrement de Vernam
+    print("Chiffrement du message avec le chiffrement de Vernam...")
+    encrypted_text, key = vernam_encrypt(lettre_decode_vigenere)
 
-with open("Etape_5_Lettre_chiffrage_vernam.txt", "w") as f:
-    f.write(encrypted_text)
+    with open("Etape_5_Lettre_chiffrage_vernam.txt", "w") as f:
+        f.write(encrypted_text)
 
-with open("Etape_5_Lettre_chiffrage_vernam_bynary.txt", "w") as f:
-    f.write("".join(f"{ord(i):08b}" for i in encrypted_text))
+    with open("Etape_5_Lettre_chiffrage_vernam_bynary.txt", "w") as f:
+        f.write("".join(f"{ord(i):08b}" for i in encrypted_text))
 
-with open("Etape_5_Cle_vernam.txt", "w") as f:
-    f.write(key)
-# print(f"Cle de chiffrement pour le chiffrement de Vernam : \n{key}")
+    with open("Etape_5_Cle_vernam.txt", "w") as f:
+        f.write(key)
+    # print(f"Cle de chiffrement pour le chiffrement de Vernam : \n{key}")
 
-decrypted_text = vernam_decrypt(encrypted_text, key)
+    decrypted_text = vernam_decrypt(encrypted_text, key)
 
-# Compression du message avec Huffman
-print("Compression du message avec Huffman...")
-huffman = HuffmanCoding()
-codeMap = huffman.get_code(encrypted_text)
-# print("code map : ", codeMap)
-HuffmanCoding.save_huffman_object("huffman_code.txt", huffman)
-huffman = HuffmanCoding.load_huffman_object("huffman_code.txt")
-codeMap = huffman.get_code(encrypted_text)
+    # Compression du message avec Huffman
+    print("Compression du message avec Huffman...")
+    huffman = HuffmanCoding()
+    codeMap = huffman.get_code(encrypted_text)
+    # print("code map : ", codeMap)
+    HuffmanCoding.save_huffman_object("huffman_code.txt", huffman)
+    huffman = HuffmanCoding.load_huffman_object("huffman_code.txt")
+    codeMap = huffman.get_code(encrypted_text)
 
-# Encodage du message avec Huffman pour la compression
-lettre_encode_verman_huffman = huffman.encode(codeMap, encrypted_text)
-# Décodage du message avec Huffman
-lettre_decode_verman_huffman = huffman.decode(lettre_encode_verman_huffman)
-# Déchiffrement du message avec le chiffrement de Vernam après Huffman
-lettre_decode_verman_huffman_decrypted = vernam_decrypt(lettre_decode_verman_huffman, key)
+    # Encodage du message avec Huffman pour la compression
+    lettre_encode_verman_huffman = huffman.encode(codeMap, encrypted_text)
+    # Décodage du message avec Huffman
+    lettre_decode_verman_huffman = huffman.decode(lettre_encode_verman_huffman)
+    # Déchiffrement du message avec le chiffrement de Vernam après Huffman
+    lettre_decode_verman_huffman_decrypted = vernam_decrypt(lettre_decode_verman_huffman, key)
 
-with open("Etape_6_Lettre_encode_verman_huffman.txt", "w") as f:
-    f.write(lettre_encode_verman_huffman)
+    with open("Etape_6_Lettre_encode_verman_huffman.txt", "w") as f:
+        f.write(lettre_encode_verman_huffman)
 
-with open("Etape_7_Lettre_decode_verman_huffman.txt", "w") as f:
-    f.write(lettre_decode_verman_huffman)
+    with open("Etape_7_Lettre_decode_verman_huffman.txt", "w") as f:
+        f.write(lettre_decode_verman_huffman)
 
-with open("Etape_8_Lettre_decode_verman_huffman_decrypted.txt", "w") as f:
-    f.write(lettre_decode_verman_huffman_decrypted)
+    with open("Etape_8_Lettre_decode_verman_huffman_decrypted.txt", "w") as f:
+        f.write(lettre_decode_verman_huffman_decrypted)
 
-# print(
-#     f"Message crypté avec le chiffrement de Vernam et compressé avec Huffman en binaire: \n{lettre_encode_verman_huffman}")
-# print(f"taille message original : {len(lettre_decode_vigenere) * 8} bits")
-# print(f"taille message compressé : {len(lettre_encode_verman_huffman)} bits")
-print(f"Taux de compression : {len(lettre_decode_vigenere) * 8 / len(lettre_encode_verman_huffman)}")
-print("Fin du programme")
+    # print(
+    #     f"Message crypté avec le chiffrement de Vernam et compressé avec Huffman en binaire: \n{lettre_encode_verman_huffman}")
+    # print(f"taille message original : {len(lettre_decode_vigenere) * 8} bits")
+    # print(f"taille message compressé : {len(lettre_encode_verman_huffman)} bits")
+    print(f"Taux de compression : {len(lettre_decode_vigenere) * 8 / len(lettre_encode_verman_huffman)}")
+    print("Fin du programme")

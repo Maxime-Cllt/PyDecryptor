@@ -24,6 +24,22 @@ Il envoie alors la lettre chiffrée et compressée à son destinataire, qui parv
 
 - Python
 
+## Prérequis
+
+- Python >=3.10
+
+## Installation
+
+```bash 
+git clone https://github.com/Maxime-Cllt/PyDecryptor.git
+```
+
+## Utilisation
+
+```bash
+python main.py
+```
+
 ## Auteurs
 
 <ul>
