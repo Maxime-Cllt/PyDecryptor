@@ -1,4 +1,4 @@
-<h1 align="center">Carbone 6</h1>
+<h1 align="center">PyDecryptor</h1>
 
 ## Scénario
 
